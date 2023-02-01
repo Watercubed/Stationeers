@@ -1,0 +1,26 @@
+alias ACGasSensor d0
+
+alias ACPower r0
+alias Temp r1
+alias Target r2
+alias TempOffset r3
+alias TempOffsetHigh r4
+
+start:
+l Temp ACGasSensor Temperature
+sub TempOffset Temp 1
+l Target db Setting
+
+start2:
+l Temp ACGasSensor Temperature
+
+sgt ACPower TempOffset Target
+s db Mode ACPower
+beqz ACPower timer
+
+yield
+j start
+
+timer:
+sub TempOffset Temp 4
+j start2
